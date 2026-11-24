@@ -1,30 +1,22 @@
-#!/usr/bin/env python3
-"""Warning label for humans: one line, big laugh."""
+"""Warning Label for Humans — one-line big laugh (resubmit).
 
-import sys
+Deterministic program: writes the entry line to /output/entry.txt and
+prints it to stdout. Stdlib only, no randomness.
+"""
 
-LINE = "WARNING: This human will ask for your honest opinion, then punish you for giving it."
+LINE = "WARNING: Do not say 'we need to talk.' This human has already rehearsed the breakup, the custody of the dog, and your apology speech."
 
-
-def write_entry():
-    """Best-effort write of the label to the harness output path.
-
-    The grader reads /output/entry.txt; if that path is unavailable
-    (e.g. a local run without the sandbox), stdout still carries
-    the exact same line, so the program never fails on the write.
-    """
-    try:
-        with open("/output/entry.txt", "w", encoding="utf-8") as f:
-            f.write(LINE)
-    except OSError:
-        pass
+OUTPUT_PATH = "/output/entry.txt"
 
 
 def main():
-    # Write without a trailing newline: stdout is exactly the 84-char
-    # line, byte-identical to /output/entry.txt.
-    sys.stdout.write(LINE)
-    write_entry()
+    # Gate: at most 160 chars, exactly one line, no leading/trailing whitespace.
+    assert 1 <= len(LINE) <= 160, "line must be 1-160 chars"
+    assert "\n" not in LINE and "\r" not in LINE, "line must be a single line"
+    assert LINE == LINE.strip(), "line must not have leading/trailing whitespace"
+    with open(OUTPUT_PATH, "w", encoding="utf-8") as f:
+        f.write(LINE)
+    print(LINE)
 
 
 if __name__ == "__main__":
